@@ -1,0 +1,194 @@
+from PIL import Image, ImageOps
+import time
+import numpy as np
+from matplotlib import pyplot as plt
+
+def desplazar (imagen,parametro):
+    tiempo_de_inicio = time.time() # Cuenta los segundos de ejecucion"""
+    ruta = ("C:/Users/georg/Desktop/ESCOM/6to. Semestre/AnalisisImagenes/Practicas/Practica2/" + imagen) #Concatena la ruta de la carpeta 
+    imagen = Image.open(ruta) #Para buscar la imagen"""
+    imagen.show()
+    imagen7 = imagen
+    i = 0
+    while i < imagen7.size[0]:
+        j = 0
+        while j < imagen7.size[1]:
+            r, g, b = imagen7.getpixel((i,j))
+            r+=parametro
+            g+=parametro
+            b+=parametro
+            if r >255:
+                r=255            
+            if g >255:
+                g=255
+            if b >255:
+                b=255
+            imagen7.putpixel((i,j),(r,g,b))
+            j+=1
+        i+=1
+    imagen7.show()
+    size = (imagen7.size[0],imagen7.size[1])
+    nueva = Image.new('RGB',size,"white")
+    nueva.paste(imagen7,(0,0))
+    nueva.save("desp.png")
+    tiempo_de_terminacion = time.time() #Marca la finalizacion del programa"""
+    print ("Abrir la imagen tardo: ", tiempo_de_terminacion - tiempo_de_inicio, " segundos")
+
+def ecualizar(imagen):
+    tiempo_de_inicio = time.time() # Cuenta los segundos de ejecucion"""
+    ruta = ("C:/Users/georg/Desktop/ESCOM/6to. Semestre/AnalisisImagenes/Practicas/Practica2/" + imagen) #Concatena la ruta de la carpeta 
+    imagen = Image.open(ruta) #Para buscar la imagen"""
+    imagen.show()
+    Histograma(imagen)
+    imagen3 = imagen
+    tot=imagen3.size[0]*imagen3.size[1]
+    maxi=0
+    mini=300
+    i = 0
+    while i < imagen3.size[0]:
+        j = 0
+        while j < imagen3.size[1]:
+            maximo = max(imagen3.getpixel((i,j)))
+            minimo = min(imagen3.getpixel((i,j))) 
+            if maximo >= maxi:
+                maxi = maximo
+            if minimo <= mini:
+                mini = minimo
+            j+=1
+        i+=1 
+    i = 0
+    while i < imagen3.size[0]:
+        j = 0
+        while j < imagen3.size[1]:
+            r, g, b = imagen3.getpixel((i,j))
+            origen = (r + g + b) / 3
+            final = ((maxi - mini) * (origen/tot)) + mini     
+            final = int (final)
+            pixel = tuple ([final,final,final])
+            imagen3.putpixel((i,j), pixel)
+            j+=1
+        i+=1        
+    imagen3.show()
+    size = (imagen3.size[0],imagen3.size[1])
+    nueva = Image.new('RGB',size,"white")
+    nueva.paste(imagen3,(0,0))
+    nueva.save("eq.png")
+    print("El nivel maximo de gris es: ", maxi)
+    print("El nivel minimo de gris es: ", mini)
+    Histograma(imagen3)
+    tiempo_de_terminacion = time.time() #Marca la finalizacion del programa"""
+    print ("Abrir la imagen tardo: ", tiempo_de_terminacion - tiempo_de_inicio, " segundos")
+    
+def expandir(imagen):
+    tiempo_de_inicio = time.time() # Cuenta los segundos de ejecucion"""
+    ruta = ("C:/Users/georg/Desktop/ESCOM/6to. Semestre/AnalisisImagenes/Practicas/Practica2/" + imagen) #Concatena la ruta de la carpeta 
+    imagen = Image.open(ruta) #Para buscar la imagen"""
+    imagen.show()
+    Histograma(imagen)
+    imagen3 = imagen
+    maxi=0
+    mini=300
+    i = 0
+    while i < imagen3.size[0]:
+        j = 0
+        while j < imagen3.size[1]:
+            maximo = max(imagen3.getpixel((i,j)))
+            minimo = min(imagen3.getpixel((i,j))) 
+            if maximo >= maxi:
+                maxi = maximo
+            if minimo <= mini:
+                mini = minimo
+            j+=1
+        i+=1  
+    i = 0
+    while i < imagen3.size[0]:
+        j = 0
+        while j < imagen3.size[1]:
+            origenr, origeng, origenb = imagen3.getpixel((i,j))
+            prom=(origenr+origenb+origeng)/3
+            prom=int(prom)
+            final=(((prom-mini)/(maxi-mini))*(255-0))+0
+            if final >255:
+                final=255
+            final = int(final)
+            pixel = tuple ([final,final,final])
+            imagen3.putpixel((i,j), pixel)
+            j+=1
+        i+=1        
+    imagen3.show()
+    size = (imagen3.size[0],imagen3.size[1])
+    nueva = Image.new('RGB',size,"white")
+    nueva.paste(imagen3,(0,0))
+    nueva.save("ex.png")
+    print("El nivel maximo de gris es: ", maxi)
+    print("El nivel minimo de gris es: ", mini)
+    Histograma(imagen3)
+    tiempo_de_terminacion = time.time() #Marca la finalizacion del programa"""
+    print ("Abrir la imagen tardo: ", tiempo_de_terminacion - tiempo_de_inicio, " segundos")
+
+def contraer(imagen):
+    tiempo_de_inicio = time.time() # Cuenta los segundos de ejecucion"""
+    ruta = ("C:/Users/georg/Desktop/ESCOM/6to. Semestre/AnalisisImagenes/Practicas/Practica2/" + imagen) #Concatena la ruta de la carpeta 
+    imagen = Image.open(ruta) #Para buscar la imagen"""
+    imagen.show()
+    Histograma(imagen)
+    imagen3 = imagen
+    maxi=0
+    mini=300
+    i = 0
+    while i < imagen3.size[0]:
+        j = 0
+        while j < imagen3.size[1]:
+            maximo = max(imagen3.getpixel((i,j)))
+            minimo = min(imagen3.getpixel((i,j))) 
+            if maximo >= maxi:
+                maxi = maximo
+            if minimo <= mini:
+                mini = minimo
+            j+=1
+        i+=1 
+    
+    i = 0
+    while i < imagen3.size[0]:
+        j = 0
+        while j < imagen3.size[1]:
+            origenr, origeng, origenb = imagen3.getpixel((i,j))
+            prom=(origenr+origenb+origeng)/3
+            prom=int(prom)
+            final=(((255-0)/(maxi-mini))*(prom-mini)+0)
+            final = int (final)
+            pixel = tuple ([final,final,final])
+            imagen3.putpixel((i,j), pixel)
+            j+=1
+        i+=1
+    imagen3.show()
+    size = (imagen3.size[0],imagen3.size[1])
+    nueva = Image.new('RGB',size,"white")
+    nueva.paste(imagen3,(0,0))
+    nueva.save("contraer.png")
+    Histograma(imagen3)
+    print("El nivel maximo de gris es: ", maxi)
+    print("El nivel minimo de gris es: ", mini)
+    tiempo_de_terminacion = time.time() #Marca la finalizacion del programa"""
+    print ("Abrir la imagen tardo: ", tiempo_de_terminacion - tiempo_de_inicio, " segundos")     
+
+def Histograma(im):
+    im = im.convert('L')
+    [ren, col] = im.size
+    total = ren * col
+    a = np.asarray(im, dtype = np.float32)
+    a = a.reshape(1, total)
+    a = a.astype(int)
+    a = max(a)
+    valor = 0
+    maxd = max(a)
+    grises = maxd
+    vec = np.zeros(grises + 1)
+    for i in range(total - 1):
+        valor = a[i]
+        vec[valor] = vec[valor] + 1    
+    plt.plot(vec)
+    plt.show()
+
+if __name__ == "__main__":
+    ecualizar("Imagen.jpg")
